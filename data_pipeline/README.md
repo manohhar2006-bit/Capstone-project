@@ -439,7 +439,6 @@ The verification output is saved to:
 | `verify_database.py` | Verifies database schema and relationships |
 | `requirements.txt` | Module 1 Python dependencies |
 
----
 
 ## 14. Installation
 
@@ -449,3 +448,14 @@ From the project root, activate the virtual environment.
 
 ```powershell
 .\.venv\Scripts\Activate.ps1
+
+---
+
+## Reproducibility
+
+The complete Module 1 pipeline can be regenerated from the repository using the provided Python scripts.
+
+The database can be recreated from `cleaned_books.csv` by running:
+
+```powershell
+python .\data_pipeline\database.py
