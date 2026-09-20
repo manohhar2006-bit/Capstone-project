@@ -20,4 +20,8 @@ Capstone-project/
 ├── support_assistant/
 │   └── Module 3 - Support Assistant
 │
+<<<<<<< Updated upstream
 └── README.md
+=======
+└── README.md
+>>>>>>> Stashed changes

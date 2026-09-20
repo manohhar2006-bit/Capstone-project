@@ -2,44 +2,32 @@ import sqlite3
 import pandas as pd
 
 
-# =========================================================
 # Configuration
-# =========================================================
+
 
 DATABASE_PATH = "data_pipeline/zepto_books.db"
 CLEANED_FILE = "data_pipeline/cleaned_books.csv"
 
 
-# =========================================================
 # Load cleaned dataset
-# =========================================================
 
 cleaned_df = pd.read_csv(CLEANED_FILE)
 
 
-# =========================================================
 # Connect to SQLite database
-# =========================================================
 
 connection = sqlite3.connect(DATABASE_PATH)
 
 cursor = connection.cursor()
 
 
-# =========================================================
 # Enable foreign-key enforcement
-# =========================================================
 
 cursor.execute("PRAGMA foreign_keys = ON;")
 
 
-# =========================================================
+
 # Recreate database tables from scratch
-# =========================================================
-# Dropping the tables first makes this script reproducible.
-# Every run starts with a clean database and avoids duplicate
-# book records.
-# =========================================================
 
 cursor.execute("DROP TABLE IF EXISTS books;")
 cursor.execute("DROP TABLE IF EXISTS categories;")
@@ -47,9 +35,8 @@ cursor.execute("DROP TABLE IF EXISTS categories;")
 connection.commit()
 
 
-# =========================================================
 # Create categories table
-# =========================================================
+
 
 cursor.execute(
     """
@@ -61,9 +48,7 @@ cursor.execute(
 )
 
 
-# =========================================================
 # Create books table
-# =========================================================
 
 cursor.execute(
     """
@@ -84,9 +69,7 @@ cursor.execute(
 connection.commit()
 
 
-# =========================================================
 # Insert categories
-# =========================================================
 
 categories = [
     ("Travel",),
@@ -105,9 +88,7 @@ cursor.executemany(
 connection.commit()
 
 
-# =========================================================
 # Read category IDs from database
-# =========================================================
 
 cursor.execute(
     """
@@ -123,9 +104,7 @@ category_lookup = {
 }
 
 
-# =========================================================
 # Prepare book records
-# =========================================================
 
 book_records = []
 
@@ -147,9 +126,7 @@ for _, row in cleaned_df.iterrows():
     )
 
 
-# =========================================================
 # Insert books
-# =========================================================
 
 cursor.executemany(
     """
@@ -169,9 +146,7 @@ cursor.executemany(
 connection.commit()
 
 
-# =========================================================
 # Verify tables
-# =========================================================
 
 cursor.execute(
     """
@@ -185,9 +160,8 @@ cursor.execute(
 tables = cursor.fetchall()
 
 
-# =========================================================
+
 # Verify category records
-# =========================================================
 
 cursor.execute(
     """
@@ -200,9 +174,7 @@ cursor.execute(
 category_rows = cursor.fetchall()
 
 
-# =========================================================
 # Verify book count
-# =========================================================
 
 cursor.execute(
     """
@@ -214,9 +186,7 @@ cursor.execute(
 book_count = cursor.fetchone()[0]
 
 
-# =========================================================
 # Verify books per category
-# =========================================================
 
 cursor.execute(
     """
@@ -234,9 +204,8 @@ cursor.execute(
 books_per_category = cursor.fetchall()
 
 
-# =========================================================
+
 # Verify foreign-key integrity
-# =========================================================
 
 cursor.execute(
     """
@@ -252,9 +221,7 @@ cursor.execute(
 invalid_foreign_keys = cursor.fetchone()[0]
 
 
-# =========================================================
 # Print verification results
-# =========================================================
 
 print("=" * 60)
 print("DATABASE CREATED AND LOADED")
@@ -295,8 +262,6 @@ print("Invalid foreign-key references:")
 print(invalid_foreign_keys)
 
 
-# =========================================================
 # Close database connection
-# =========================================================
 
 connection.close()

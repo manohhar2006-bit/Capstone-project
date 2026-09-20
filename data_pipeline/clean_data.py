@@ -1,18 +1,17 @@
 import pandas as pd
 
 
-# ---------------------------------------------------------
+
 # Load raw scraped data
-# ---------------------------------------------------------
+
 
 RAW_FILE = "data_pipeline/raw_books.csv"
 
 df = pd.read_csv(RAW_FILE)
 
 
-# ---------------------------------------------------------
 # Clean price
-# ---------------------------------------------------------
+
 
 def clean_price(value):
     """
@@ -31,9 +30,7 @@ def clean_price(value):
 df["price_gbp"] = df["price"].apply(clean_price)
 
 
-# ---------------------------------------------------------
 # Show price conversion
-# ---------------------------------------------------------
 
 print("=" * 60)
 print("PRICE CLEANING")
@@ -54,9 +51,8 @@ print()
 print("Missing price_gbp values:")
 print(df["price_gbp"].isna().sum())
 
-# ---------------------------------------------------------
 # Clean star rating
-# ---------------------------------------------------------
+
 
 rating_mapping = {
     "One": 1,
@@ -70,9 +66,8 @@ rating_mapping = {
 df["rating"] = df["star_rating"].map(rating_mapping)
 
 
-# ---------------------------------------------------------
 # Show rating conversion
-# ---------------------------------------------------------
+
 
 print()
 print("=" * 60)
@@ -97,9 +92,7 @@ print()
 print("Missing rating values:")
 print(df["rating"].isna().sum())
 
-# ---------------------------------------------------------
 # Clean availability
-# ---------------------------------------------------------
 
 def clean_availability(value):
     """
@@ -126,9 +119,7 @@ df["in_stock"] = df["availability"].apply(
 )
 
 
-# ---------------------------------------------------------
 # Show availability conversion
-# ---------------------------------------------------------
 
 print()
 print("=" * 60)
@@ -152,18 +143,15 @@ print()
 print("Missing in_stock values:")
 print(df["in_stock"].isna().sum())
 
-# ---------------------------------------------------------
 # Convert GBP to INR using the required project rate
-# ---------------------------------------------------------
 
 GBP_TO_INR = 105.50
 
 df["price_inr"] = df["price_gbp"] * GBP_TO_INR
 
 
-# ---------------------------------------------------------
 # Show currency conversion
-# ---------------------------------------------------------
+
 
 print()
 print("=" * 60)
@@ -191,9 +179,8 @@ print()
 print("Missing price_inr values:")
 print(df["price_inr"].isna().sum())
 
-# ---------------------------------------------------------
 # Create final cleaned dataset
-# ---------------------------------------------------------
+
 
 cleaned_df = df[
     [
@@ -214,9 +201,8 @@ cleaned_df["in_stock"] = cleaned_df["in_stock"].astype(bool)
 cleaned_df["price_inr"] = cleaned_df["price_inr"].astype(float)
 
 
-# ---------------------------------------------------------
+
 # Save cleaned dataset
-# ---------------------------------------------------------
 
 cleaned_df.to_csv(
     "data_pipeline/cleaned_books.csv",
@@ -224,9 +210,7 @@ cleaned_df.to_csv(
 )
 
 
-# ---------------------------------------------------------
 # Final cleaned dataset verification
-# ---------------------------------------------------------
 
 print()
 print("=" * 60)

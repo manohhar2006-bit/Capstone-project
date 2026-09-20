@@ -3,10 +3,7 @@ from bs4 import BeautifulSoup
 from urllib.parse import urljoin
 import pandas as pd
 
-
-# ---------------------------------------------------------
 # Category configuration
-# ---------------------------------------------------------
 
 CATEGORIES = {
     "Travel": "https://books.toscrape.com/catalogue/category/books/travel_2/index.html",
@@ -14,18 +11,11 @@ CATEGORIES = {
     "Romance": "https://books.toscrape.com/catalogue/category/books/romance_8/index.html",
 }
 
-
-# ---------------------------------------------------------
 # Store all scraped books
-# ---------------------------------------------------------
-
 books = []
 
 
-# ---------------------------------------------------------
 # Scrape each category
-# ---------------------------------------------------------
-
 for category_name, start_url in CATEGORIES.items():
 
     print()
@@ -64,10 +54,7 @@ for category_name, start_url in CATEGORIES.items():
             f"{len(book_cards)} books"
         )
 
-        # -------------------------------------------------
         # Extract each book
-        # -------------------------------------------------
-
         for book in book_cards:
 
             # Full title from the HTML title attribute
@@ -107,11 +94,7 @@ for category_name, start_url in CATEGORIES.items():
             }
 
             books.append(book_data)
-
-        # -------------------------------------------------
         # Check whether another page exists
-        # -------------------------------------------------
-
         next_page = soup.find(
             "li",
             class_="next"
@@ -136,10 +119,7 @@ for category_name, start_url in CATEGORIES.items():
         page_number += 1
 
 
-# ---------------------------------------------------------
 # Scraping summary
-# ---------------------------------------------------------
-
 print()
 print("=" * 60)
 print("SCRAPING COMPLETE")
@@ -164,18 +144,11 @@ for category_name in CATEGORIES:
         f"{category_name}: {category_count}"
     )
 
-
-# ---------------------------------------------------------
 # Convert raw records to pandas DataFrame
-# ---------------------------------------------------------
-
 raw_df = pd.DataFrame(books)
 
 
-# ---------------------------------------------------------
 # Save raw scraped data
-# ---------------------------------------------------------
-
 raw_df.to_csv(
     "data_pipeline/raw_books.csv",
     index=False
@@ -187,10 +160,7 @@ print(
 )
 
 
-# ---------------------------------------------------------
 # Final verification
-# ---------------------------------------------------------
-
 print()
 print("Raw dataset shape:", raw_df.shape)
 

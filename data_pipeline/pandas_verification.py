@@ -3,26 +3,17 @@ from pathlib import Path
 
 import pandas as pd
 
-
-# =========================================================
 # Configuration
-# =========================================================
 
 DATABASE_PATH = "data_pipeline/zepto_books.db"
 OUTPUT_FILE = "data_pipeline/pandas_verification.txt"
 
 
-# =========================================================
 # Connect to SQLite
-# =========================================================
-
 connection = sqlite3.connect(DATABASE_PATH)
 
-
-# =========================================================
 # SQL Query 1
 # Use pd.read_sql()
-# =========================================================
 
 query_1 = """
 SELECT
@@ -41,11 +32,8 @@ df_query_1 = pd.read_sql(
     connection
 )
 
-
-# =========================================================
 # SQL Query 2
 # Use pd.read_sql()
-# =========================================================
 
 query_2 = """
 SELECT
@@ -66,10 +54,9 @@ df_query_2 = pd.read_sql(
 )
 
 
-# =========================================================
 # SQL JOIN Query
 # This reproduces Query 6 from queries.sql
-# =========================================================
+
 
 join_query = """
 SELECT
@@ -94,9 +81,7 @@ df_sql_join = pd.read_sql(
 )
 
 
-# =========================================================
 # Read the source tables into pandas
-# =========================================================
 
 books_df = pd.read_sql(
     """
@@ -125,9 +110,7 @@ categories_df = pd.read_sql(
 )
 
 
-# =========================================================
 # Reproduce the JOIN using pandas merge()
-# =========================================================
 
 df_pandas_join = pd.merge(
     books_df,
@@ -136,10 +119,7 @@ df_pandas_join = pd.merge(
     how="inner"
 )
 
-
-# =========================================================
 # Apply the same ordering as the SQL JOIN query
-# =========================================================
 
 df_pandas_join = df_pandas_join.sort_values(
     by=[
@@ -154,18 +134,12 @@ df_pandas_join = df_pandas_join.sort_values(
     ]
 )
 
-
-# =========================================================
 # Apply the same LIMIT 10 as the SQL query
-# =========================================================
 
 df_pandas_join = df_pandas_join.head(10)
 
 
-# =========================================================
 # Select the same columns and order as SQL
-# =========================================================
-
 df_pandas_join = df_pandas_join[
     [
         "book_id",
@@ -179,19 +153,13 @@ df_pandas_join = df_pandas_join[
 ]
 
 
-# =========================================================
 # Reset indexes for comparison
-# =========================================================
-
 df_sql_join = df_sql_join.reset_index(drop=True)
 
 df_pandas_join = df_pandas_join.reset_index(drop=True)
 
 
-# =========================================================
 # Compare SQL JOIN and pandas merge()
-# =========================================================
-
 sql_join_result = df_sql_join.copy()
 
 pandas_join_result = df_pandas_join.copy()
@@ -210,10 +178,7 @@ joins_are_equivalent = sql_join_result.equals(
 )
 
 
-# =========================================================
 # Print results
-# =========================================================
-
 print("=" * 70)
 print("PANDAS VERIFICATION")
 print("=" * 70)
@@ -258,10 +223,7 @@ print("Pandas merge rows:", len(pandas_join_result))
 print("Equivalent:", joins_are_equivalent)
 
 
-# =========================================================
 # Save verification output
-# =========================================================
-
 output_sections = []
 
 output_sections.append("=" * 70)
@@ -325,10 +287,7 @@ Path(OUTPUT_FILE).write_text(
 )
 
 
-# =========================================================
 # Close connection
-# =========================================================
-
 connection.close()
 
 

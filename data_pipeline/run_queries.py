@@ -1,29 +1,18 @@
 import sqlite3
 from pathlib import Path
 
-
-# =========================================================
 # Configuration
-# =========================================================
-
 DATABASE_PATH = "data_pipeline/zepto_books.db"
 QUERY_FILE = "data_pipeline/queries.sql"
 OUTPUT_FILE = "data_pipeline/query_outputs.txt"
 
-
-# =========================================================
 # Read SQL file
-# =========================================================
-
 query_text = Path(QUERY_FILE).read_text(
     encoding="utf-8"
 )
 
 
-# =========================================================
 # Split the SQL file into individual queries
-# =========================================================
-
 queries = []
 
 for statement in query_text.split(";"):
@@ -47,20 +36,13 @@ for statement in query_text.split(";"):
     if sql:
         queries.append(sql)
 
-
-# =========================================================
 # Connect to database
-# =========================================================
-
 connection = sqlite3.connect(DATABASE_PATH)
 
 cursor = connection.cursor()
 
 
-# =========================================================
 # Store all output in memory
-# =========================================================
-
 all_output = []
 
 all_output.append("=" * 70)
@@ -70,10 +52,7 @@ all_output.append("=" * 70)
 all_output.append("")
 
 
-# =========================================================
 # Execute each query
-# =========================================================
-
 for query_number, query in enumerate(queries, start=1):
 
     print()
@@ -110,10 +89,7 @@ for query_number, query in enumerate(queries, start=1):
     print()
     print("Number of rows:", len(results))
 
-    # -----------------------------------------------------
     # Save output for this query
-    # -----------------------------------------------------
-
     all_output.append("=" * 70)
     all_output.append(f"QUERY {query_number}")
     all_output.append("=" * 70)
@@ -137,20 +113,14 @@ for query_number, query in enumerate(queries, start=1):
     all_output.append("")
 
 
-# =========================================================
 # Save all query outputs
-# =========================================================
-
 Path(OUTPUT_FILE).write_text(
     "\n".join(all_output),
     encoding="utf-8"
 )
 
 
-# =========================================================
 # Close database
-# =========================================================
-
 connection.close()
 
 
