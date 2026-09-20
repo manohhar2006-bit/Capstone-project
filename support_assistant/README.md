@@ -1,13 +1,16 @@
-Zepto Support Assistant
+# Zepto Support Assistant
 
 Module 3 of the IIT Patna AI/ML Capstone.
 
-This module implements a retrieval-augmented Zepto policy support assistant using the eight provided policy documents, all-MiniLM-L6-v2 embeddings, ChromaDB retrieval, LangGraph orchestration, structured Pydantic responses, and a FastAPI /ask endpoint.
+This module implements a retrieval-augmented Zepto policy support assistant using the eight provided policy documents, `all-MiniLM-L6-v2` embeddings, ChromaDB retrieval, LangGraph orchestration, structured Pydantic responses, and a FastAPI `/ask` endpoint.
 
-The graded baseline uses deterministic MOCK_LLM behavior and does not require an API key or external LLM for inference.
+The graded baseline uses deterministic `MOCK_LLM` behavior and does not require an API key or external LLM for inference.
 
-Project Structure
+---
 
+## Project Structure
+
+```text
 support_assistant/
 ├── docs/
 │   ├── doc_01.txt
